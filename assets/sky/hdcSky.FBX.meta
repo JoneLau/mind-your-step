@@ -1,0 +1,109 @@
+{
+  "ver": "2.0.12",
+  "importer": "fbx",
+  "imported": true,
+  "uuid": "0a0b3855-cbac-436d-a6ac-be51480a728c",
+  "files": [],
+  "subMetas": {
+    "f6832": {
+      "importer": "gltf-mesh",
+      "uuid": "0a0b3855-cbac-436d-a6ac-be51480a728c@f6832",
+      "displayName": "",
+      "id": "f6832",
+      "name": "hdcSky.mesh",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.1.0",
+      "imported": true,
+      "files": [
+        ".bin",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "7f40d": {
+      "importer": "gltf-embeded-image",
+      "uuid": "0a0b3855-cbac-436d-a6ac-be51480a728c@7f40d",
+      "displayName": "",
+      "id": "7f40d",
+      "name": "hdcSky.image",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.3",
+      "imported": true,
+      "files": [
+        ".png",
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "d6067": {
+      "importer": "texture",
+      "uuid": "0a0b3855-cbac-436d-a6ac-be51480a728c@d6067",
+      "displayName": "",
+      "id": "d6067",
+      "name": "hdcSky.texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 1,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "0a0b3855-cbac-436d-a6ac-be51480a728c@7f40d"
+      },
+      "ver": "1.0.21",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "bfc57": {
+      "importer": "gltf-scene",
+      "uuid": "0a0b3855-cbac-436d-a6ac-be51480a728c@bfc57",
+      "displayName": "",
+      "id": "bfc57",
+      "name": "hdcSky.prefab",
+      "userData": {
+        "gltfIndex": 0
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "imageMetas": [
+      {
+        "name": "hdcSky",
+        "uri": "0a0b3855-cbac-436d-a6ac-be51480a728c@7f40d"
+      }
+    ],
+    "legacyFbxImporter": false,
+    "redirect": "0a0b3855-cbac-436d-a6ac-be51480a728c@bfc57",
+    "assetFinder": {
+      "meshes": [
+        "0a0b3855-cbac-436d-a6ac-be51480a728c@f6832"
+      ],
+      "skeletons": [],
+      "textures": [
+        "0a0b3855-cbac-436d-a6ac-be51480a728c@d6067"
+      ],
+      "materials": [
+        "5b8906d7-8214-42d2-8994-dbe218eca572"
+      ],
+      "scenes": [
+        "0a0b3855-cbac-436d-a6ac-be51480a728c@bfc57"
+      ]
+    },
+    "dumpMaterials": true,
+    "materialDumpDir": "db://assets/sky/Materials_hdcSky"
+  }
+}
