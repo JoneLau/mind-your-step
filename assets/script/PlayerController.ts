@@ -1,10 +1,15 @@
 
 
-import { _decorator, Component, Node, systemEvent, SystemEventType, EventMouse, Vec3 } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEventType, EventMouse, Vec3, Animation } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerController')
 export class PlayerController extends Component {
+    @property({
+        type: Animation
+    })
+    cocosAnim: Animation | null = null;
+
     private _startJump = false;
     private _jumpStep = 0;
     private _curJumpTime = 0;
@@ -13,10 +18,22 @@ export class PlayerController extends Component {
     private _curPos = new Vec3();
     private _targetPos = new Vec3();
     private _deltaPos= new Vec3();
-    private _isMoving = false;
+    private _curMoveIndex = 0;
 
     start () {
-        systemEvent.on(SystemEventType.MOUSE_UP, this.onMouseUp, this);
+        // systemEvent.on(SystemEventType.MOUSE_UP, this.onMouseUp, this);
+    }
+
+    reset(){
+        this._curMoveIndex = 0;
+    }
+
+    setInputActive(active: boolean){
+        if (active) {
+            systemEvent.on(SystemEventType.MOUSE_UP, this.onMouseUp, this);
+        } else {
+            systemEvent.off(SystemEventType.MOUSE_UP, this.onMouseUp, this);
+        }
     }
 
     onMouseUp(event: EventMouse){
@@ -28,7 +45,7 @@ export class PlayerController extends Component {
     }
 
     jumpByStep(step: number){
-        if(this._isMoving){
+        if(this._startJump){
             return;
         }
 
@@ -38,10 +55,20 @@ export class PlayerController extends Component {
         this._curJumpTime = 0;
         this.node.getPosition(this._curPos);
         Vec3.add(this._targetPos, this._curPos, new Vec3(step, 0, 0));
+
+        if(this.cocosAnim){
+            this.cocosAnim.getState('cocos_anim_jump').speed = 3.5;
+            this.cocosAnim.play('cocos_anim_jump');
+        }
+
+        this._curMoveIndex += step;
     }
 
     onOnceJumpEnd(){
-        this._isMoving = false;
+        if(this.cocosAnim){
+            this.cocosAnim.play('cocos_anim_idle');
+            this.node.emit('jumpEnd', this._curMoveIndex);
+        }
     }
 
     update (deltaTime: number) {
