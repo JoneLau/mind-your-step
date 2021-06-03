@@ -10,6 +10,10 @@ export class PlayerController extends Component {
     })
     cocosAnim: Animation | null = null;
 
+    get curMoveIndex(){
+        return this._curMoveIndex;
+    }
+
     private _startJump = false;
     private _jumpStep = 0;
     private _curJumpTime = 0;
@@ -26,6 +30,10 @@ export class PlayerController extends Component {
 
     reset(){
         this._curMoveIndex = 0;
+    }
+
+    revive(){
+        this._curMoveIndex --;
     }
 
     setInputActive(active: boolean){

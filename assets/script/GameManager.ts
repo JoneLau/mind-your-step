@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Prefab, instantiate, game } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, game, Label, Button } from 'cc';
 import { PlayerController } from './PlayerController';
 const { ccclass, property } = _decorator;
 
@@ -12,6 +12,7 @@ enum GameState{
     GS_INIT,
     GS_PLAYING,
     GS_END,
+    GS_END_REVIVE,
 }
 
 @ccclass('GameManager')
@@ -28,6 +29,18 @@ export class GameManager extends Component {
     @property(Node)
     startMenu: Node = null!;
 
+    @property(Node)
+    resultMenu: Node = null!;
+
+    @property(Label)
+    score: Label = null!;
+
+    @property(Node)
+    nextButton: Node = null!;
+
+    @property(Node)
+    reviveButton: Node = null!;
+
     private _road: BlockType[] = [];
 
     set curState(value: GameState){
@@ -39,6 +52,10 @@ export class GameManager extends Component {
                 }, 0.1);
                 break;
             case GameState.GS_END:
+                this.nextLevel();
+                break;
+            case GameState.GS_END_REVIVE:
+                this.revive();
                 break;
             default:
                 this.init();
@@ -51,6 +68,28 @@ export class GameManager extends Component {
         this.playCtrl.setInputActive(false);
         this.playCtrl.node.setPosition(0, 0.5, 0);
         this.playCtrl.reset();
+        this.resultMenu.active = false;
+    }
+
+    revive(){
+        this.startMenu.active = false;
+        this.resultMenu.active = true;
+        this.nextButton.active = false;
+        this.reviveButton.active = true;
+        this.playCtrl.setInputActive(false);
+        this.score.string = this.playCtrl.curMoveIndex.toString();
+    }
+
+    nextLevel(){
+        this.generateRoad();
+        this.startMenu.active = false;
+        this.resultMenu.active = true;
+        this.nextButton.active = true;
+        this.reviveButton.active = false;
+        this.playCtrl.setInputActive(false);
+        this.playCtrl.node.setPosition(0, 0.5, 0);
+        this.playCtrl.reset();
+        this.score.string = this.roadLength.toString();
     }
 
     start () {
@@ -98,18 +137,31 @@ export class GameManager extends Component {
         this.curState = GameState.GS_PLAYING;
     }
 
-    chechResult(moveIndex: number){
-        if (moveIndex < this.roadLength) {
+    checkResult(moveIndex: number){
+        if (moveIndex < this.roadLength - 1) {
             if (this._road[moveIndex] === BlockType.BT_NONE) {
-                this.curState = GameState.GS_INIT;
+                this.curState = GameState.GS_END_REVIVE;
             }
         } else {
-            this.curState = GameState.GS_INIT;
+            this.curState = GameState.GS_END;
         }
     }
 
     onPlayerJumpEnd(moveIndex: number){
-        this.chechResult(moveIndex);
+        this.checkResult(moveIndex);
+    }
+
+    onReviveButtonClicked(){
+        this.onNextButtonClicked();
+        this.playCtrl.revive();
+        this.playCtrl.node.setPosition(this.playCtrl.curMoveIndex, 0.5, 0);
+    }
+
+    onNextButtonClicked(){
+        this.resultMenu.active = false;
+        setTimeout(()=>{
+            this.playCtrl.setInputActive(true);
+        }, 0.1);
     }
 
     // update (deltaTime: number) {
